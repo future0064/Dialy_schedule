@@ -3,7 +3,7 @@
   "applicationId": "com.dailyschedule.eng",
   "version": "1.0.0",
   "defaultMode": "window",
-  "port": 0,
+  "port": 17420,
   "documentRoot": "/resources/",
   "url": "/",
   "enableServer": true,
@@ -38,7 +38,7 @@
     }
   },
   "cli": {
-    "binaryName": "Daily_schedule_v1.5",
+    "binaryName": "Daily_schedule_v1.6",
     "resourcesPath": "/resources/",
     "extensionsPath": "/extensions/",
     "clientLibrary": "/resources/js/neutralino.js",
