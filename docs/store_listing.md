@@ -7,8 +7,8 @@
 | Name               | Daily Schedule — Task Manager |
 | Category           | Productivity |
 | Language           | English |
-| Privacy Policy URL | https://YOUR_GITHUB.github.io/Dialy_schedule/privacy_policy.html |
-| Homepage URL       | https://github.com/YOUR_GITHUB/Dialy_schedule |
+| Privacy Policy URL | https://future0064.github.io/Dialy_schedule/privacy_policy.html |
+| Homepage URL       | https://github.com/future0064/Dialy_schedule |
 
 ---
 

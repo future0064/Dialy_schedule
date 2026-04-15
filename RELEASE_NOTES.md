@@ -14,7 +14,7 @@
 
 ### How to publish
 1. Host `docs/` on GitHub Pages → get the Privacy Policy URL
-2. Replace `YOUR_GITHUB` in `manifest.json` and `privacy_policy.html`
+2. Replace `future0064` in `manifest.json` and `privacy_policy.html`
 3. Replace `YOUR_KOFI_NAME` in `js/app.js` with your Ko-fi link
 4. Upload `Daily_schedule_v1.7_chrome.zip` to [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole)
 
