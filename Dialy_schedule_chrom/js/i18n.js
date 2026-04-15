@@ -3,6 +3,7 @@ const LANGS = {
   en: {
     flag: '🇺🇸', name: 'English',
     appTitle: 'Daily Schedule',
+    sponsorText: 'Support this project',
     prev: '← Prev', next: 'Next →',
     total: 'Total', done: 'Done',
     placeholder: 'Add a new task...',
@@ -33,6 +34,7 @@ const LANGS = {
   zh: {
     flag: '🇨🇳', name: '中文',
     appTitle: '每日工作安排',
+    sponsorText: '赞助支持开发者',
     prev: '← 前一天', next: '后一天 →',
     total: '总任务', done: '已完成',
     placeholder: '输入新任务...',
@@ -59,6 +61,7 @@ const LANGS = {
   ja: {
     flag: '🇯🇵', name: '日本語',
     appTitle: '日次スケジュール',
+    sponsorText: '開発者を支援する',
     prev: '← 前日', next: '翌日 →',
     total: '合計', done: '完了',
     placeholder: 'タスクを追加...',
@@ -85,6 +88,7 @@ const LANGS = {
   ko: {
     flag: '🇰🇷', name: '한국어',
     appTitle: '일일 업무 일정',
+    sponsorText: '개발자 후원하기',
     prev: '← 이전', next: '다음 →',
     total: '전체', done: '완료',
     placeholder: '새 작업 추가...',

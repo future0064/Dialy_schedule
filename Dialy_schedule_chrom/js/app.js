@@ -1,6 +1,7 @@
 // ─── Constants ────────────────────────────────────────────────────────
-const PRIO       = { high: 0, mid: 1, low: 2 };
-const PRIO_CLASS = { high: 'p-high', mid: 'p-mid', low: 'p-low' };
+const PRIO        = { high: 0, mid: 1, low: 2 };
+const PRIO_CLASS  = { high: 'p-high', mid: 'p-mid', low: 'p-low' };
+const SPONSOR_URL = 'https://ko-fi.com/YOUR_KOFI_NAME'; // ← replace with your link
 
 // ─── State ────────────────────────────────────────────────────────────
 let currentOffset = 0;
@@ -77,6 +78,8 @@ function applyStaticText() {
   document.getElementById('addBtn').textContent           = L.addBtn;
   document.getElementById('copyYesterdayBtn').textContent = L.copyYesterday;
   document.getElementById('historyTitle').textContent     = L.historyTitle;
+  document.getElementById('sponsorText').textContent      = L.sponsorText;
+  document.getElementById('sponsorBtn').href              = SPONSOR_URL;
   document.title = L.appTitle;
 
   const sel = document.getElementById('prioritySelect');

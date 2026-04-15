@@ -2,6 +2,24 @@
 
 ---
 
+## v1.7.1 (2026-04-15)
+**Chrome Extension — store-ready release**
+
+### New
+- Sponsor footer (☕ Ko-fi button) with 4-language text, subtle warm styling
+- `manifest.json` completed with `name`, `short_name`, `description`, `homepage_url`
+- Privacy policy page (`docs/privacy_policy.html`) ready for GitHub Pages hosting
+- Chrome Web Store listing copy in EN + ZH (`docs/store_listing.md`)
+- Packaged zip (`docs/Daily_schedule_v1.7_chrome.zip`, **33.6 KB**)
+
+### How to publish
+1. Host `docs/` on GitHub Pages → get the Privacy Policy URL
+2. Replace `YOUR_GITHUB` in `manifest.json` and `privacy_policy.html`
+3. Replace `YOUR_KOFI_NAME` in `js/app.js` with your Ko-fi link
+4. Upload `Daily_schedule_v1.7_chrome.zip` to [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole)
+
+---
+
 ## v1.7 (2026-04-15)
 **Chrome Extension — browser popup version**
 
