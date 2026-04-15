@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Schedule</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f0f2f5;
+    --card: #ffffff;
+    --primary: #4f6ef7;
+    --primary-light: #eef0fe;
+    --success: #22c55e;
+    --success-light: #f0fdf4;
+    --danger: #ef4444;
+    --text: #1e293b;
+    --muted: #94a3b8;
+    --border: #e2e8f0;
+    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    --radius: 12px;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  .container { max-width: 720px; margin: 0 auto; }
+
+  /* Header */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .header h1 span { font-size: 24px; }
+
+  /* Nav bar */
+  .nav-bar {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .nav-btn {
+    background: var(--primary-light);
+    color: var(--primary);
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.15s;
+  }
+  .nav-btn:hover { background: var(--primary); color: #fff; }
+  .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .nav-btn:disabled:hover { background: var(--primary-light); color: var(--primary); }
+
+  .date-display {
+    text-align: center;
+    flex: 1;
+  }
+  .date-display .date-main {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .date-display .date-sub {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .today-badge {
+    display: inline-block;
+    background: var(--primary);
+    color: #fff;
+    font-size: 11px;
+    padding: 1px 7px;
+    border-radius: 20px;
+    margin-left: 6px;
+    vertical-align: middle;
+    font-weight: 600;
+  }
+
+  /* Progress card */
+  .progress-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .progress-stats {
+    display: flex;
+    gap: 20px;
+    flex-shrink: 0;
+  }
+  .stat { text-align: center; }
+  .stat .num {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1;
+  }
+  .stat .num.done { color: var(--success); }
+  .stat .label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .progress-bar-wrap { flex: 1; }
+  .progress-bar-track {
+    height: 10px;
+    background: var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    border-radius: 10px;
+    background: linear-gradient(90deg, var(--primary), var(--success));
+    transition: width 0.4s ease;
+  }
+  .progress-pct {
+    font-size: 12px;
+    color: var(--muted);
+    text-align: right;
+    margin-top: 4px;
+  }
+
+  /* Task list card */
+  .task-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .task-card-header {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .task-list { list-style: none; }
+  .task-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 20px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+    animation: fadeIn 0.2s ease;
+  }
+  .task-item:last-child { border-bottom: none; }
+  .task-item:hover { background: #fafafa; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .task-check {
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--border);
+    border-radius: 50%;
+    flex-shrink: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    background: #fff;
+  }
+  .task-check:hover { border-color: var(--primary); }
+  .task-check.checked {
+    background: var(--success);
+    border-color: var(--success);
+  }
+  .task-check.checked::after {
+    content: '';
+    width: 6px;
+    height: 10px;
+    border: 2px solid #fff;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg) translateY(-1px);
+    display: block;
+  }
+
+  .task-text {
+    flex: 1;
+    font-size: 15px;
+    line-height: 1.4;
+    cursor: pointer;
+    word-break: break-all;
+  }
+  .task-text.done {
+    text-decoration: line-through;
+    color: var(--muted);
+  }
+
+  .task-time {
+    font-size: 11px;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+
+  .task-del {
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    padding: 2px 4px;
+    border-radius: 4px;
+    opacity: 0;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+  .task-item:hover .task-del { opacity: 1; }
+  .task-del:hover { color: var(--danger); background: #fef2f2; }
+
+  /* Priority dot */
+  .priority-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .p-high { background: #ef4444; }
+  .p-mid  { background: #f59e0b; }
+  .p-low  { background: #94a3b8; }
+
+  /* Empty state */
+  .empty-state {
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--muted);
+  }
+  .empty-state .emoji { font-size: 40px; margin-bottom: 10px; }
+  .empty-state p { font-size: 14px; }
+
+  /* Add task area */
+  .add-area {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px 20px;
+    margin-bottom: 16px;
+  }
+  .add-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .add-input {
+    flex: 1;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 15px;
+    font-family: inherit;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .add-input:focus { border-color: var(--primary); }
+  .add-input::placeholder { color: var(--muted); }
+
+  .priority-select {
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 10px;
+    font-size: 13px;
+    font-family: inherit;
+    color: var(--text);
+    outline: none;
+    cursor: pointer;
+    background: #fff;
+    transition: border-color 0.15s;
+  }
+  .priority-select:focus { border-color: var(--primary); }
+
+  .add-btn {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: opacity 0.15s;
+    white-space: nowrap;
+  }
+  .add-btn:hover { opacity: 0.88; }
+
+  .copy-btn {
+    margin-top: 10px;
+    background: none;
+    border: 1.5px dashed var(--border);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 13px;
+    color: var(--muted);
+    cursor: pointer;
+    font-family: inherit;
+    width: 100%;
+    transition: all 0.15s;
+  }
+  .copy-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+  .copy-btn:disabled { display: none; }
+
+  /* History panel */
+  .history-panel {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .history-header {
+    padding: 14px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+  }
+  .history-header:hover { background: #fafafa; }
+  .history-toggle { font-size: 16px; transition: transform 0.2s; }
+  .history-toggle.open { transform: rotate(180deg); }
+
+  .history-list { display: none; }
+  .history-list.open { display: block; }
+
+  .history-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .history-item:last-child { border-bottom: none; }
+  .history-item:hover { background: var(--primary-light); }
+  .history-date { font-size: 14px; font-weight: 500; flex: 1; }
+  .history-rate {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--success);
+    min-width: 38px;
+    text-align: right;
+  }
+  .history-rate.low { color: var(--muted); }
+  .history-rate.mid { color: #f59e0b; }
+  .mini-bar {
+    width: 80px;
+    height: 6px;
+    background: var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .mini-bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    background: linear-gradient(90deg, var(--primary), var(--success));
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    body { padding: 12px; }
+    .nav-btn { padding: 8px 10px; font-size: 13px; }
+    .date-display .date-main { font-size: 16px; }
+    .add-row { flex-wrap: wrap; }
+    .add-btn { width: 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1><span>📋</span> Daily Schedule</h1>
+  </div>
+
+  <!-- Navigation -->
+  <div class="nav-bar">
+    <button class="nav-btn" id="prevBtn" onclick="navigate(-1)">← Prev</button>
+    <div class="date-display">
+      <div class="date-main" id="dateMain"></div>
+      <div class="date-sub" id="dateSub"></div>
+    </div>
+    <button class="nav-btn" id="nextBtn" onclick="navigate(1)">Next →</button>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-card">
+    <div class="progress-stats">
+      <div class="stat">
+        <div class="num" id="statTotal">0</div>
+        <div class="label">Total</div>
+      </div>
+      <div class="stat">
+        <div class="num done" id="statDone">0</div>
+        <div class="label">Done</div>
+      </div>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="progressBar" style="width:0%"></div>
+      </div>
+      <div class="progress-pct" id="progressPct">0%</div>
+    </div>
+  </div>
+
+  <!-- Add task (today only) -->
+  <div class="add-area" id="addArea">
+    <div class="add-row">
+      <input class="add-input" id="taskInput" placeholder="Add a new task..." maxlength="100"
+        onkeydown="if(event.key==='Enter')addTask()">
+      <select class="priority-select" id="prioritySelect">
+        <option value="high">🔴 High</option>
+        <option value="mid" selected>🟡 Mid</option>
+        <option value="low">⚪ Low</option>
+      </select>
+      <button class="add-btn" onclick="addTask()">+ Add</button>
+    </div>
+    <button class="copy-btn" id="copyYesterdayBtn" onclick="copyYesterday()">
+      📋 Copy incomplete tasks from yesterday
+    </button>
+  </div>
+
+  <!-- Task list -->
+  <div class="task-card">
+    <div class="task-card-header">
+      <span id="listLabel">Today's Tasks</span>
+      <span id="sortHint" style="font-size:12px;cursor:pointer;color:var(--primary)" onclick="toggleSort()">⬆ Sort by Priority</span>
+    </div>
+    <ul class="task-list" id="taskList"></ul>
+  </div>
+
+  <!-- History -->
+  <div class="history-panel">
+    <div class="history-header" onclick="toggleHistory()">
+      <span>📅 History</span>
+      <span class="history-toggle" id="historyToggle">▾</span>
+    </div>
+    <div class="history-list" id="historyList"></div>
+  </div>
+
+</div>
+
+<script>
+  // ─── State ───────────────────────────────────────────────
+  const STORAGE_KEY = 'daily_tasks_v1';
+  const WEEKDAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const MONTHS   = ['January','February','March','April','May','June',
+                    'July','August','September','October','November','December'];
+
+  let currentOffset = 0; // 0 = today, -1 = yesterday, etc.
+  let sortMode = 'default'; // 'default' | 'priority' | 'time'
+  let historyOpen = false;
+
+  // ─── Date helpers ─────────────────────────────────────────
+  function getDateKey(offset = 0) {
+    const d = new Date();
+    d.setDate(d.getDate() + offset);
+    return d.toISOString().slice(0, 10); // YYYY-MM-DD
+  }
+
+  function formatDateDisplay(key) {
+    const [y, m, d] = key.split('-').map(Number);
+    const date = new Date(y, m - 1, d);
+    const wd = WEEKDAYS[date.getDay()];
+    return {
+      main: `${MONTHS[m - 1]} ${d}, ${y}`,
+      sub: wd
+    };
+  }
+
+  // ─── Storage ─────────────────────────────────────────────
+  function loadAll() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+    catch { return {}; }
+  }
+
+  function saveAll(data) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }
+
+  function getDayData(key) {
+    const all = loadAll();
+    return all[key] || { tasks: [] };
+  }
+
+  function saveDayData(key, data) {
+    const all = loadAll();
+    all[key] = data;
+    saveAll(all);
+  }
+
+  // ─── Priority ─────────────────────────────────────────────
+  const PRIO       = { high: 0, mid: 1, low: 2 };
+  const PRIO_CLASS = { high: 'p-high', mid: 'p-mid', low: 'p-low' };
+  const PRIO_LABEL = { high: 'High', mid: 'Mid', low: 'Low' };
+
+  // ─── Render ───────────────────────────────────────────────
+  function render() {
+    const key     = getDateKey(currentOffset);
+    const isToday = currentOffset === 0;
+
+    // Header date
+    const { main, sub } = formatDateDisplay(key);
+    document.getElementById('dateMain').innerHTML =
+      main + (isToday ? '<span class="today-badge">Today</span>' : '');
+    document.getElementById('dateSub').textContent = sub;
+
+    // Nav buttons
+    document.getElementById('prevBtn').disabled = false;
+    document.getElementById('nextBtn').disabled = currentOffset >= 0;
+
+    // Add area
+    document.getElementById('addArea').style.display = isToday ? 'block' : 'none';
+
+    // List label
+    document.getElementById('listLabel').textContent =
+      isToday ? "Today's Tasks" : `Tasks for ${main}`;
+
+    // Sort hint
+    const sortLabels = {
+      default:  '⬆ Sort by Priority',
+      priority: '🕐 Sort by Time',
+      time:     '↺ Default Order'
+    };
+    document.getElementById('sortHint').textContent = sortLabels[sortMode];
+
+    // Data
+    const data  = getDayData(key);
+    let tasks   = [...data.tasks];
+    if (sortMode === 'priority') {
+      tasks.sort((a, b) => (PRIO[a.priority] ?? 1) - (PRIO[b.priority] ?? 1));
+    } else if (sortMode === 'time') {
+      tasks.sort((a, b) => (a.createdAt || '').localeCompare(b.createdAt || ''));
+    }
+
+    // Progress
+    const total = tasks.length;
+    const done  = tasks.filter(t => t.done).length;
+    const pct   = total ? Math.round(done / total * 100) : 0;
+    document.getElementById('statTotal').textContent = total;
+    document.getElementById('statDone').textContent  = done;
+    document.getElementById('progressBar').style.width = pct + '%';
+    document.getElementById('progressPct').textContent  = pct + '%';
+
+    // Task list
+    const ul = document.getElementById('taskList');
+    ul.innerHTML = '';
+    if (tasks.length === 0) {
+      ul.innerHTML = `<li class="empty-state">
+        <div class="emoji">${isToday ? '✨' : '📭'}</div>
+        <p>${isToday ? 'No tasks yet — add one to get started!' : 'No tasks recorded for this day.'}</p>
+      </li>`;
+    } else {
+      tasks.forEach((task) => {
+        const li = document.createElement('li');
+        li.className = 'task-item';
+        const pClass = PRIO_CLASS[task.priority] || 'p-mid';
+        li.innerHTML = `
+          <div class="task-check ${task.done ? 'checked' : ''}"
+            onclick="toggleTask('${key}', '${task.id}')"></div>
+          <div class="priority-dot ${pClass}" title="Priority: ${PRIO_LABEL[task.priority] || 'Mid'}"></div>
+          <span class="task-text ${task.done ? 'done' : ''}"
+            onclick="toggleTask('${key}', '${task.id}')">${escHtml(task.text)}</span>
+          <span class="task-time">${task.createdAt || ''}</span>
+          ${isToday ? `<button class="task-del" onclick="deleteTask('${key}', '${task.id}')" title="Delete">×</button>` : ''}
+        `;
+        ul.appendChild(li);
+      });
+    }
+
+    // Copy yesterday button
+    const yKey  = getDateKey(-1);
+    const yData = getDayData(yKey);
+    const copyBtn = document.getElementById('copyYesterdayBtn');
+    if (copyBtn) {
+      copyBtn.disabled = (yData.tasks.filter(t => !t.done).length === 0);
+    }
+
+    // History
+    renderHistory();
+  }
+
+  function renderHistory() {
+    const all  = loadAll();
+    const keys = Object.keys(all)
+      .filter(k => k !== getDateKey(0))
+      .sort((a, b) => b.localeCompare(a))
+      .slice(0, 30);
+
+    const el = document.getElementById('historyList');
+    if (keys.length === 0) {
+      el.innerHTML = '<div class="empty-state" style="padding:20px"><p>No history yet.</p></div>';
+      return;
+    }
+
+    el.innerHTML = keys.map(key => {
+      const data  = all[key];
+      const tasks = data.tasks || [];
+      const total = tasks.length;
+      const done  = tasks.filter(t => t.done).length;
+      const pct   = total ? Math.round(done / total * 100) : 0;
+      const rateClass = pct >= 80 ? '' : pct >= 50 ? 'mid' : 'low';
+      const { main, sub } = formatDateDisplay(key);
+      return `
+        <div class="history-item" onclick="jumpToDate('${key}')">
+          <div>
+            <div class="history-date">${main}</div>
+            <div style="font-size:11px;color:var(--muted)">${sub} · ${done}/${total} completed</div>
+          </div>
+          <div class="mini-bar"><div class="mini-bar-fill" style="width:${pct}%"></div></div>
+          <div class="history-rate ${rateClass}">${pct}%</div>
+        </div>`;
+    }).join('');
+  }
+
+  // ─── Actions ──────────────────────────────────────────────
+  function addTask() {
+    const input = document.getElementById('taskInput');
+    const text  = input.value.trim();
+    if (!text) { input.focus(); return; }
+    const priority = document.getElementById('prioritySelect').value;
+    const key      = getDateKey(0);
+    const data     = getDayData(key);
+    data.tasks.push({
+      id: Date.now().toString(),
+      text,
+      done: false,
+      priority,
+      createdAt: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })
+    });
+    saveDayData(key, data);
+    input.value = '';
+    input.focus();
+    render();
+  }
+
+  function toggleTask(key, id) {
+    const data = getDayData(key);
+    const task = data.tasks.find(t => t.id === id);
+    if (task) task.done = !task.done;
+    saveDayData(key, data);
+    render();
+  }
+
+  function deleteTask(key, id) {
+    const data = getDayData(key);
+    data.tasks = data.tasks.filter(t => t.id !== id);
+    saveDayData(key, data);
+    render();
+  }
+
+  function navigate(dir) {
+    currentOffset = Math.min(0, currentOffset + dir);
+    render();
+  }
+
+  function jumpToDate(key) {
+    const todayDate  = new Date(getDateKey(0));
+    const targetDate = new Date(key);
+    currentOffset = Math.round((targetDate - todayDate) / 86400000);
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function toggleSort() {
+    const cycle = { default: 'priority', priority: 'time', time: 'default' };
+    sortMode = cycle[sortMode];
+    render();
+  }
+
+  function toggleHistory() {
+    historyOpen = !historyOpen;
+    document.getElementById('historyList').classList.toggle('open', historyOpen);
+    document.getElementById('historyToggle').classList.toggle('open', historyOpen);
+    if (historyOpen) renderHistory();
+  }
+
+  function copyYesterday() {
+    const yKey     = getDateKey(-1);
+    const todayKey = getDateKey(0);
+    const yData    = getDayData(yKey);
+    if (!yData.tasks.length) return;
+
+    const todayData = getDayData(todayKey);
+    const now = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+    const newTasks = yData.tasks.filter(t => !t.done).map(t => ({
+      id: Date.now().toString() + Math.random().toString(36).slice(2),
+      text: t.text,
+      done: false,
+      priority: t.priority,
+      createdAt: now
+    }));
+    todayData.tasks = [...todayData.tasks, ...newTasks];
+    saveDayData(todayKey, todayData);
+    render();
+  }
+
+  function escHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // ─── Init ─────────────────────────────────────────────────
+  render();
+</script>
+</body>
+</html>
