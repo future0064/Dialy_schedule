@@ -2,6 +2,30 @@
 
 ---
 
+## v1.7 (2026-04-15)
+**Chrome Extension — browser popup version**
+
+### New Platform
+- Packaged as a Manifest V3 Chrome extension (`Dialy_schedule_chrom/`)
+- Click the toolbar icon to open the task manager as a popup (420 × 600px)
+- All features from the desktop app are preserved
+
+### Technical Changes vs Desktop App
+- `localStorage` → `chrome.storage.local` (async, more reliable, survives browser cache clears)
+- Inline `<script>` split into external files (MV3 CSP requirement):
+  - `js/i18n.js` — all language strings
+  - `js/storage.js` — async read/write wrappers
+  - `js/app.js` — all UI logic (fully async/await)
+- Event listeners replace inline `onclick` attributes
+- Icons auto-generated at 16 / 32 / 48 / 128px from `dialy.png`
+
+### Installation
+1. Open `chrome://extensions`
+2. Enable **Developer mode**
+3. Click **Load unpacked** → select `Dialy_schedule_chrom/`
+
+---
+
 ## v1.6 (2026-04-15)
 **Fix: Language preference now persists across restarts**
 
