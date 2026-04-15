@@ -1,0 +1,37 @@
+{
+  "name": "daily-schedule",
+  "version": "1.0.0",
+  "description": "每日工作安排",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win portable"
+  },
+  "build": {
+    "appId": "com.dailyschedule.app",
+    "productName": "每日工作安排",
+    "win": {
+      "icon": "dialy.ico",
+      "target": [
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ]
+    },
+    "portable": {
+      "artifactName": "Daily_schedule_v1.0.exe"
+    },
+    "files": [
+      "index.html",
+      "main.js"
+    ],
+    "directories": {
+      "output": "dist"
+    }
+  },
+  "devDependencies": {
+    "electron": "^32.0.0",
+    "electron-builder": "^25.0.0"
+  }
+}
