@@ -1,7 +1,7 @@
 // ─── Constants ────────────────────────────────────────────────────────
 const PRIO        = { high: 0, mid: 1, low: 2 };
 const PRIO_CLASS  = { high: 'p-high', mid: 'p-mid', low: 'p-low' };
-const SPONSOR_URL = 'https://ko-fi.com/YOUR_KOFI_NAME'; // ← replace with your link
+const SPONSOR_URL = 'https://ko-fi.com/jeffreyyu'; // ← replace with your link
 
 // ─── State ────────────────────────────────────────────────────────────
 let currentOffset = 0;
