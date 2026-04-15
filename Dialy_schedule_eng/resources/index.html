@@ -13,7 +13,6 @@
     --primary: #4f6ef7;
     --primary-light: #eef0fe;
     --success: #22c55e;
-    --success-light: #f0fdf4;
     --danger: #ef4444;
     --text: #1e293b;
     --muted: #94a3b8;
@@ -23,7 +22,10 @@
   }
 
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                 "PingFang SC", "Microsoft YaHei",
+                 "Hiragino Sans", "Yu Gothic",
+                 "Malgun Gothic", sans-serif;
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
@@ -32,7 +34,7 @@
 
   .container { max-width: 720px; margin: 0 auto; }
 
-  /* Header */
+  /* ── Header ─────────────────────────────────────────── */
   .header {
     display: flex;
     align-items: center;
@@ -49,7 +51,59 @@
   }
   .header h1 span { font-size: 24px; }
 
-  /* Nav bar */
+  /* ── Language switcher ──────────────────────────────── */
+  .lang-switcher { position: relative; }
+
+  .lang-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 7px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    cursor: pointer;
+    font-family: inherit;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    white-space: nowrap;
+  }
+  .lang-btn:hover { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); }
+  .lang-btn .arrow { font-size: 10px; color: var(--muted); transition: transform 0.2s; }
+  .lang-btn.open .arrow { transform: rotate(180deg); }
+
+  .lang-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    min-width: 160px;
+    z-index: 100;
+    overflow: hidden;
+  }
+  .lang-dropdown.open { display: block; }
+
+  .lang-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.12s;
+    font-family: inherit;
+  }
+  .lang-option:hover { background: var(--bg); }
+  .lang-option.active { background: var(--primary-light); color: var(--primary); font-weight: 600; }
+  .lang-option .flag { font-size: 18px; line-height: 1; }
+
+  /* ── Nav bar ─────────────────────────────────────────── */
   .nav-bar {
     background: var(--card);
     border-radius: var(--radius);
@@ -69,26 +123,17 @@
     font-size: 14px;
     cursor: pointer;
     font-weight: 500;
+    font-family: inherit;
     transition: all 0.15s;
   }
   .nav-btn:hover { background: var(--primary); color: #fff; }
   .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
   .nav-btn:disabled:hover { background: var(--primary-light); color: var(--primary); }
 
-  .date-display {
-    text-align: center;
-    flex: 1;
-  }
-  .date-display .date-main {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--text);
-  }
-  .date-display .date-sub {
-    font-size: 12px;
-    color: var(--muted);
-    margin-top: 2px;
-  }
+  .date-display { text-align: center; flex: 1; }
+  .date-display .date-main { font-size: 18px; font-weight: 700; color: var(--text); }
+  .date-display .date-sub  { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
   .today-badge {
     display: inline-block;
     background: var(--primary);
@@ -101,7 +146,7 @@
     font-weight: 600;
   }
 
-  /* Progress card */
+  /* ── Progress card ───────────────────────────────────── */
   .progress-card {
     background: var(--card);
     border-radius: var(--radius);
@@ -112,41 +157,22 @@
     align-items: center;
     gap: 16px;
   }
-  .progress-stats {
-    display: flex;
-    gap: 20px;
-    flex-shrink: 0;
-  }
+  .progress-stats { display: flex; gap: 20px; flex-shrink: 0; }
   .stat { text-align: center; }
-  .stat .num {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--primary);
-    line-height: 1;
-  }
+  .stat .num { font-size: 24px; font-weight: 700; color: var(--primary); line-height: 1; }
   .stat .num.done { color: var(--success); }
   .stat .label { font-size: 11px; color: var(--muted); margin-top: 2px; }
   .progress-bar-wrap { flex: 1; }
-  .progress-bar-track {
-    height: 10px;
-    background: var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-  }
+  .progress-bar-track { height: 10px; background: var(--border); border-radius: 10px; overflow: hidden; }
   .progress-bar-fill {
     height: 100%;
     border-radius: 10px;
     background: linear-gradient(90deg, var(--primary), var(--success));
     transition: width 0.4s ease;
   }
-  .progress-pct {
-    font-size: 12px;
-    color: var(--muted);
-    text-align: right;
-    margin-top: 4px;
-  }
+  .progress-pct { font-size: 12px; color: var(--muted); text-align: right; margin-top: 4px; }
 
-  /* Task list card */
+  /* ── Task list card ──────────────────────────────────── */
   .task-card {
     background: var(--card);
     border-radius: var(--radius);
@@ -184,8 +210,7 @@
   }
 
   .task-check {
-    width: 22px;
-    height: 22px;
+    width: 22px; height: 22px;
     border: 2px solid var(--border);
     border-radius: 50%;
     flex-shrink: 0;
@@ -197,76 +222,45 @@
     background: #fff;
   }
   .task-check:hover { border-color: var(--primary); }
-  .task-check.checked {
-    background: var(--success);
-    border-color: var(--success);
-  }
+  .task-check.checked { background: var(--success); border-color: var(--success); }
   .task-check.checked::after {
     content: '';
-    width: 6px;
-    height: 10px;
+    width: 6px; height: 10px;
     border: 2px solid #fff;
-    border-top: none;
-    border-left: none;
+    border-top: none; border-left: none;
     transform: rotate(45deg) translateY(-1px);
     display: block;
   }
 
   .task-text {
-    flex: 1;
-    font-size: 15px;
-    line-height: 1.4;
-    cursor: pointer;
-    word-break: break-all;
+    flex: 1; font-size: 15px; line-height: 1.4;
+    cursor: pointer; word-break: break-all;
   }
-  .task-text.done {
-    text-decoration: line-through;
-    color: var(--muted);
-  }
+  .task-text.done { text-decoration: line-through; color: var(--muted); }
 
-  .task-time {
-    font-size: 11px;
-    color: var(--muted);
-    flex-shrink: 0;
-  }
+  .task-time { font-size: 11px; color: var(--muted); flex-shrink: 0; }
 
   .task-del {
-    background: none;
-    border: none;
-    color: var(--muted);
-    cursor: pointer;
-    font-size: 18px;
-    line-height: 1;
-    padding: 2px 4px;
-    border-radius: 4px;
-    opacity: 0;
-    transition: all 0.15s;
-    flex-shrink: 0;
+    background: none; border: none;
+    color: var(--muted); cursor: pointer;
+    font-size: 18px; line-height: 1;
+    padding: 2px 4px; border-radius: 4px;
+    opacity: 0; transition: all 0.15s; flex-shrink: 0;
   }
   .task-item:hover .task-del { opacity: 1; }
   .task-del:hover { color: var(--danger); background: #fef2f2; }
 
-  /* Priority dot */
-  .priority-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
+  .priority-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
   .p-high { background: #ef4444; }
   .p-mid  { background: #f59e0b; }
   .p-low  { background: #94a3b8; }
 
-  /* Empty state */
-  .empty-state {
-    padding: 40px 20px;
-    text-align: center;
-    color: var(--muted);
-  }
+  /* ── Empty state ─────────────────────────────────────── */
+  .empty-state { padding: 40px 20px; text-align: center; color: var(--muted); }
   .empty-state .emoji { font-size: 40px; margin-bottom: 10px; }
   .empty-state p { font-size: 14px; }
 
-  /* Add task area */
+  /* ── Add task area ───────────────────────────────────── */
   .add-area {
     background: var(--card);
     border-radius: var(--radius);
@@ -274,11 +268,8 @@
     padding: 16px 20px;
     margin-bottom: 16px;
   }
-  .add-row {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-  }
+  .add-row { display: flex; gap: 10px; align-items: center; }
+
   .add-input {
     flex: 1;
     border: 2px solid var(--border);
@@ -296,7 +287,7 @@
   .priority-select {
     border: 2px solid var(--border);
     border-radius: 8px;
-    padding: 10px 10px;
+    padding: 10px;
     font-size: 13px;
     font-family: inherit;
     color: var(--text);
@@ -308,17 +299,12 @@
   .priority-select:focus { border-color: var(--primary); }
 
   .add-btn {
-    background: var(--primary);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
+    background: var(--primary); color: #fff;
+    border: none; border-radius: 8px;
     padding: 10px 20px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    font-family: inherit;
-    transition: opacity 0.15s;
-    white-space: nowrap;
+    font-size: 14px; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+    transition: opacity 0.15s; white-space: nowrap;
   }
   .add-btn:hover { opacity: 0.88; }
 
@@ -328,17 +314,14 @@
     border: 1.5px dashed var(--border);
     border-radius: 8px;
     padding: 8px 14px;
-    font-size: 13px;
-    color: var(--muted);
-    cursor: pointer;
-    font-family: inherit;
-    width: 100%;
+    font-size: 13px; color: var(--muted);
+    cursor: pointer; font-family: inherit; width: 100%;
     transition: all 0.15s;
   }
   .copy-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
   .copy-btn:disabled { display: none; }
 
-  /* History panel */
+  /* ── History panel ───────────────────────────────────── */
   .history-panel {
     background: var(--card);
     border-radius: var(--radius);
@@ -348,82 +331,67 @@
   }
   .history-header {
     padding: 14px 20px;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--muted);
+    font-size: 14px; font-weight: 600; color: var(--muted);
     border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
-    user-select: none;
+    display: flex; align-items: center; justify-content: space-between;
+    cursor: pointer; user-select: none;
   }
   .history-header:hover { background: #fafafa; }
   .history-toggle { font-size: 16px; transition: transform 0.2s; }
   .history-toggle.open { transform: rotate(180deg); }
-
   .history-list { display: none; }
   .history-list.open { display: block; }
 
   .history-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+    display: flex; align-items: center; gap: 12px;
     padding: 12px 20px;
     border-bottom: 1px solid var(--border);
-    cursor: pointer;
-    transition: background 0.15s;
+    cursor: pointer; transition: background 0.15s;
   }
   .history-item:last-child { border-bottom: none; }
   .history-item:hover { background: var(--primary-light); }
   .history-date { font-size: 14px; font-weight: 500; flex: 1; }
-  .history-rate {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--success);
-    min-width: 38px;
-    text-align: right;
-  }
+  .history-rate { font-size: 13px; font-weight: 600; color: var(--success); min-width: 38px; text-align: right; }
   .history-rate.low { color: var(--muted); }
   .history-rate.mid { color: #f59e0b; }
-  .mini-bar {
-    width: 80px;
-    height: 6px;
-    background: var(--border);
-    border-radius: 6px;
-    overflow: hidden;
-  }
-  .mini-bar-fill {
-    height: 100%;
-    border-radius: 6px;
-    background: linear-gradient(90deg, var(--primary), var(--success));
-  }
+  .mini-bar { width: 80px; height: 6px; background: var(--border); border-radius: 6px; overflow: hidden; }
+  .mini-bar-fill { height: 100%; border-radius: 6px; background: linear-gradient(90deg, var(--primary), var(--success)); }
 
-  /* Responsive */
+  /* ── Responsive ──────────────────────────────────────── */
   @media (max-width: 480px) {
     body { padding: 12px; }
     .nav-btn { padding: 8px 10px; font-size: 13px; }
     .date-display .date-main { font-size: 16px; }
     .add-row { flex-wrap: wrap; }
     .add-btn { width: 100%; }
+    .header h1 { font-size: 18px; }
   }
 </style>
 </head>
 <body>
 <div class="container">
 
+  <!-- Header -->
   <div class="header">
-    <h1><span>📋</span> Daily Schedule</h1>
+    <h1><span>📋</span> <span id="appTitle"></span></h1>
+    <div class="lang-switcher" id="langSwitcher">
+      <button class="lang-btn" id="langBtn" onclick="toggleLangMenu()">
+        <span id="langFlag"></span>
+        <span id="langName"></span>
+        <span class="arrow">▾</span>
+      </button>
+      <div class="lang-dropdown" id="langDropdown"></div>
+    </div>
   </div>
 
   <!-- Navigation -->
   <div class="nav-bar">
-    <button class="nav-btn" id="prevBtn" onclick="navigate(-1)">← Prev</button>
+    <button class="nav-btn" id="prevBtn" onclick="navigate(-1)"></button>
     <div class="date-display">
       <div class="date-main" id="dateMain"></div>
-      <div class="date-sub" id="dateSub"></div>
+      <div class="date-sub"  id="dateSub"></div>
     </div>
-    <button class="nav-btn" id="nextBtn" onclick="navigate(1)">Next →</button>
+    <button class="nav-btn" id="nextBtn" onclick="navigate(1)"></button>
   </div>
 
   <!-- Progress -->
@@ -431,11 +399,11 @@
     <div class="progress-stats">
       <div class="stat">
         <div class="num" id="statTotal">0</div>
-        <div class="label">Total</div>
+        <div class="label" id="labelTotal"></div>
       </div>
       <div class="stat">
         <div class="num done" id="statDone">0</div>
-        <div class="label">Done</div>
+        <div class="label" id="labelDone"></div>
       </div>
     </div>
     <div class="progress-bar-wrap">
@@ -446,28 +414,22 @@
     </div>
   </div>
 
-  <!-- Add task (today only) -->
+  <!-- Add task -->
   <div class="add-area" id="addArea">
     <div class="add-row">
-      <input class="add-input" id="taskInput" placeholder="Add a new task..." maxlength="100"
+      <input class="add-input" id="taskInput" maxlength="100"
         onkeydown="if(event.key==='Enter')addTask()">
-      <select class="priority-select" id="prioritySelect">
-        <option value="high">🔴 High</option>
-        <option value="mid" selected>🟡 Mid</option>
-        <option value="low">⚪ Low</option>
-      </select>
-      <button class="add-btn" onclick="addTask()">+ Add</button>
+      <select class="priority-select" id="prioritySelect"></select>
+      <button class="add-btn" id="addBtn" onclick="addTask()"></button>
     </div>
-    <button class="copy-btn" id="copyYesterdayBtn" onclick="copyYesterday()">
-      📋 Copy incomplete tasks from yesterday
-    </button>
+    <button class="copy-btn" id="copyYesterdayBtn" onclick="copyYesterday()"></button>
   </div>
 
   <!-- Task list -->
   <div class="task-card">
     <div class="task-card-header">
-      <span id="listLabel">Today's Tasks</span>
-      <span id="sortHint" style="font-size:12px;cursor:pointer;color:var(--primary)" onclick="toggleSort()">⬆ Sort by Priority</span>
+      <span id="listLabel"></span>
+      <span id="sortHint" style="font-size:12px;cursor:pointer;color:var(--primary)" onclick="toggleSort()"></span>
     </div>
     <ul class="task-list" id="taskList"></ul>
   </div>
@@ -475,7 +437,7 @@
   <!-- History -->
   <div class="history-panel">
     <div class="history-header" onclick="toggleHistory()">
-      <span>📅 History</span>
+      <span id="historyTitle"></span>
       <span class="history-toggle" id="historyToggle">▾</span>
     </div>
     <div class="history-list" id="historyList"></div>
@@ -484,266 +446,447 @@
 </div>
 
 <script>
-  // ─── State ───────────────────────────────────────────────
-  const STORAGE_KEY = 'daily_tasks_v1';
-  const WEEKDAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-  const MONTHS   = ['January','February','March','April','May','June',
-                    'July','August','September','October','November','December'];
+// ═══════════════════════════════════════════════════════════
+// i18n — all supported languages
+// ═══════════════════════════════════════════════════════════
+const LANGS = {
+  en: {
+    flag: '🇺🇸', name: 'English',
+    appTitle: 'Daily Schedule',
+    prev: '← Prev', next: 'Next →',
+    total: 'Total', done: 'Done',
+    placeholder: 'Add a new task...',
+    high: '🔴 High', mid: '🟡 Mid', low: '⚪ Low',
+    addBtn: '+ Add',
+    copyYesterday: '📋 Copy incomplete tasks from yesterday',
+    todayTasks: "Today's Tasks",
+    tasksFor: d => `Tasks for ${d}`,
+    sortPriority: '⬆ Sort by Priority',
+    sortTime:     '🕐 Sort by Time',
+    sortDefault:  '↺ Default Order',
+    historyTitle: '📅 History',
+    emptyToday: 'No tasks yet — add one to get started!',
+    emptyPast:  'No tasks recorded for this day.',
+    noHistory:  'No history yet.',
+    completed:  (done, total) => `${done}/${total} completed`,
+    todayBadge: 'Today',
+    prioLabel:  { high: 'High', mid: 'Mid', low: 'Low' },
+    deleteTitle: 'Delete',
+    weekdays: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
+    formatDate: (y, m, d, wd) => ({
+      main: `${['January','February','March','April','May','June',
+                 'July','August','September','October','November','December'][m-1]} ${d}, ${y}`,
+      sub:  wd
+    })
+  },
 
-  let currentOffset = 0; // 0 = today, -1 = yesterday, etc.
-  let sortMode = 'default'; // 'default' | 'priority' | 'time'
-  let historyOpen = false;
+  zh: {
+    flag: '🇨🇳', name: '中文',
+    appTitle: '每日工作安排',
+    prev: '← 前一天', next: '后一天 →',
+    total: '总任务', done: '已完成',
+    placeholder: '输入新任务...',
+    high: '🔴 高', mid: '🟡 中', low: '⚪ 低',
+    addBtn: '+ 添加',
+    copyYesterday: '📋 复制昨天未完成的任务',
+    todayTasks: '今日任务',
+    tasksFor: d => `${d} 的任务`,
+    sortPriority: '⬆ 优先级排序',
+    sortTime:     '🕐 时间排序',
+    sortDefault:  '↺ 默认排序',
+    historyTitle: '📅 历史完成情况',
+    emptyToday: '还没有任务，添加一个开始吧！',
+    emptyPast:  '这天没有任务记录',
+    noHistory:  '暂无历史记录',
+    completed:  (done, total) => `${done}/${total} 项完成`,
+    todayBadge: '今天',
+    prioLabel:  { high: '高', mid: '中', low: '低' },
+    deleteTitle: '删除',
+    weekdays: ['日','一','二','三','四','五','六'],
+    formatDate: (y, m, d, wd) => ({
+      main: `${y}年${m}月${d}日`,
+      sub:  `星期${wd}`
+    })
+  },
 
-  // ─── Date helpers ─────────────────────────────────────────
-  function getDateKey(offset = 0) {
-    const d = new Date();
-    d.setDate(d.getDate() + offset);
-    return d.toISOString().slice(0, 10); // YYYY-MM-DD
+  ja: {
+    flag: '🇯🇵', name: '日本語',
+    appTitle: '日次スケジュール',
+    prev: '← 前日', next: '翌日 →',
+    total: '合計', done: '完了',
+    placeholder: 'タスクを追加...',
+    high: '🔴 高', mid: '🟡 中', low: '⚪ 低',
+    addBtn: '+ 追加',
+    copyYesterday: '📋 昨日の未完了タスクをコピー',
+    todayTasks: '本日のタスク',
+    tasksFor: d => `${d} のタスク`,
+    sortPriority: '⬆ 優先度順',
+    sortTime:     '🕐 時間順',
+    sortDefault:  '↺ デフォルト順',
+    historyTitle: '📅 履歴',
+    emptyToday: 'タスクがありません。追加してください！',
+    emptyPast:  'この日のタスクはありません',
+    noHistory:  '履歴がありません',
+    completed:  (done, total) => `${done}/${total} 完了`,
+    todayBadge: '今日',
+    prioLabel:  { high: '高', mid: '中', low: '低' },
+    deleteTitle: '削除',
+    weekdays: ['日','月','火','水','木','金','土'],
+    formatDate: (y, m, d, wd) => ({
+      main: `${y}年${m}月${d}日`,
+      sub:  `${wd}曜日`
+    })
+  },
+
+  ko: {
+    flag: '🇰🇷', name: '한국어',
+    appTitle: '일일 업무 일정',
+    prev: '← 이전', next: '다음 →',
+    total: '전체', done: '완료',
+    placeholder: '새 작업 추가...',
+    high: '🔴 높음', mid: '🟡 보통', low: '⚪ 낮음',
+    addBtn: '+ 추가',
+    copyYesterday: '📋 어제의 미완료 작업 복사',
+    todayTasks: '오늘의 작업',
+    tasksFor: d => `${d} 작업`,
+    sortPriority: '⬆ 우선순위 정렬',
+    sortTime:     '🕐 시간 정렬',
+    sortDefault:  '↺ 기본 순서',
+    historyTitle: '📅 히스토리',
+    emptyToday: '작업이 없습니다. 추가해 보세요!',
+    emptyPast:  '이 날의 작업 기록이 없습니다',
+    noHistory:  '히스토리가 없습니다',
+    completed:  (done, total) => `${done}/${total} 완료`,
+    todayBadge: '오늘',
+    prioLabel:  { high: '높음', mid: '보통', low: '낮음' },
+    deleteTitle: '삭제',
+    weekdays: ['일','월','화','수','목','금','토'],
+    formatDate: (y, m, d, wd) => ({
+      main: `${y}년 ${m}월 ${d}일`,
+      sub:  `${wd}요일`
+    })
+  }
+};
+
+// ═══════════════════════════════════════════════════════════
+// State
+// ═══════════════════════════════════════════════════════════
+const STORAGE_KEY  = 'daily_tasks_v1';
+const LANG_KEY     = 'daily_schedule_lang';
+const PRIO         = { high: 0, mid: 1, low: 2 };
+const PRIO_CLASS   = { high: 'p-high', mid: 'p-mid', low: 'p-low' };
+
+let currentOffset  = 0;
+let sortMode       = 'default'; // 'default' | 'priority' | 'time'
+let historyOpen    = false;
+let currentLang    = localStorage.getItem(LANG_KEY) || 'en';
+let langMenuOpen   = false;
+
+function t() { return LANGS[currentLang]; }
+
+// ═══════════════════════════════════════════════════════════
+// Language menu
+// ═══════════════════════════════════════════════════════════
+function buildLangMenu() {
+  const dropdown = document.getElementById('langDropdown');
+  dropdown.innerHTML = Object.entries(LANGS).map(([code, l]) => `
+    <div class="lang-option ${code === currentLang ? 'active' : ''}"
+         onclick="setLang('${code}')">
+      <span class="flag">${l.flag}</span>
+      <span>${l.name}</span>
+    </div>`).join('');
+}
+
+function toggleLangMenu() {
+  langMenuOpen = !langMenuOpen;
+  document.getElementById('langBtn').classList.toggle('open', langMenuOpen);
+  document.getElementById('langDropdown').classList.toggle('open', langMenuOpen);
+}
+
+function setLang(code) {
+  currentLang = code;
+  localStorage.setItem(LANG_KEY, code);
+  langMenuOpen = false;
+  document.getElementById('langBtn').classList.remove('open');
+  document.getElementById('langDropdown').classList.remove('open');
+  document.documentElement.lang = code;
+  buildLangMenu();
+  applyStaticText();
+  render();
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', e => {
+  if (langMenuOpen && !document.getElementById('langSwitcher').contains(e.target)) {
+    langMenuOpen = false;
+    document.getElementById('langBtn').classList.remove('open');
+    document.getElementById('langDropdown').classList.remove('open');
+  }
+});
+
+// Apply text that doesn't change with date navigation
+function applyStaticText() {
+  const L = t();
+  document.getElementById('appTitle').textContent    = L.appTitle;
+  document.getElementById('langFlag').textContent    = L.flag;
+  document.getElementById('langName').textContent    = L.name;
+  document.getElementById('labelTotal').textContent  = L.total;
+  document.getElementById('labelDone').textContent   = L.done;
+  document.getElementById('taskInput').placeholder   = L.placeholder;
+  document.getElementById('addBtn').textContent      = L.addBtn;
+  document.getElementById('copyYesterdayBtn').textContent = L.copyYesterday;
+  document.getElementById('historyTitle').textContent = L.historyTitle;
+  document.title = L.appTitle;
+
+  // Priority select options
+  const sel = document.getElementById('prioritySelect');
+  const cur = sel.value || 'mid';
+  sel.innerHTML = `
+    <option value="high">${L.high}</option>
+    <option value="mid">${L.mid}</option>
+    <option value="low">${L.low}</option>`;
+  sel.value = cur;
+}
+
+// ═══════════════════════════════════════════════════════════
+// Storage
+// ═══════════════════════════════════════════════════════════
+function loadAll() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+  catch { return {}; }
+}
+function saveAll(data) { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+function getDayData(key) { return loadAll()[key] || { tasks: [] }; }
+function saveDayData(key, data) {
+  const all = loadAll(); all[key] = data; saveAll(all);
+}
+
+// ═══════════════════════════════════════════════════════════
+// Date helpers
+// ═══════════════════════════════════════════════════════════
+function getDateKey(offset = 0) {
+  const d = new Date();
+  d.setDate(d.getDate() + offset);
+  return d.toISOString().slice(0, 10);
+}
+
+function formatDateDisplay(key) {
+  const [y, m, d] = key.split('-').map(Number);
+  const date = new Date(y, m - 1, d);
+  const wd = t().weekdays[date.getDay()];
+  return t().formatDate(y, m, d, wd);
+}
+
+// ═══════════════════════════════════════════════════════════
+// Render
+// ═══════════════════════════════════════════════════════════
+function render() {
+  const L       = t();
+  const key     = getDateKey(currentOffset);
+  const isToday = currentOffset === 0;
+
+  // Date display
+  const { main, sub } = formatDateDisplay(key);
+  document.getElementById('dateMain').innerHTML =
+    main + (isToday ? `<span class="today-badge">${L.todayBadge}</span>` : '');
+  document.getElementById('dateSub').textContent = sub;
+
+  // Nav buttons
+  document.getElementById('prevBtn').textContent = L.prev;
+  document.getElementById('nextBtn').textContent = L.next;
+  document.getElementById('prevBtn').disabled = false;
+  document.getElementById('nextBtn').disabled = currentOffset >= 0;
+
+  // Add area
+  document.getElementById('addArea').style.display = isToday ? 'block' : 'none';
+
+  // List label
+  document.getElementById('listLabel').textContent =
+    isToday ? L.todayTasks : L.tasksFor(main);
+
+  // Sort hint
+  const sortLabels = {
+    default:  L.sortPriority,
+    priority: L.sortTime,
+    time:     L.sortDefault
+  };
+  document.getElementById('sortHint').textContent = sortLabels[sortMode];
+
+  // Tasks
+  const data  = getDayData(key);
+  let tasks   = [...data.tasks];
+  if (sortMode === 'priority') {
+    tasks.sort((a, b) => (PRIO[a.priority] ?? 1) - (PRIO[b.priority] ?? 1));
+  } else if (sortMode === 'time') {
+    tasks.sort((a, b) => (a.createdAt || '').localeCompare(b.createdAt || ''));
   }
 
-  function formatDateDisplay(key) {
-    const [y, m, d] = key.split('-').map(Number);
-    const date = new Date(y, m - 1, d);
-    const wd = WEEKDAYS[date.getDay()];
-    return {
-      main: `${MONTHS[m - 1]} ${d}, ${y}`,
-      sub: wd
-    };
+  // Progress
+  const total = tasks.length;
+  const done  = tasks.filter(t => t.done).length;
+  const pct   = total ? Math.round(done / total * 100) : 0;
+  document.getElementById('statTotal').textContent       = total;
+  document.getElementById('statDone').textContent        = done;
+  document.getElementById('progressBar').style.width     = pct + '%';
+  document.getElementById('progressPct').textContent     = pct + '%';
+
+  // Task list
+  const ul = document.getElementById('taskList');
+  ul.innerHTML = '';
+  if (tasks.length === 0) {
+    ul.innerHTML = `<li class="empty-state">
+      <div class="emoji">${isToday ? '✨' : '📭'}</div>
+      <p>${isToday ? L.emptyToday : L.emptyPast}</p>
+    </li>`;
+  } else {
+    tasks.forEach(task => {
+      const li = document.createElement('li');
+      li.className = 'task-item';
+      const pClass = PRIO_CLASS[task.priority] || 'p-mid';
+      li.innerHTML = `
+        <div class="task-check ${task.done ? 'checked' : ''}"
+          onclick="toggleTask('${key}','${task.id}')"></div>
+        <div class="priority-dot ${pClass}"
+          title="${L.prioLabel[task.priority] || L.prioLabel.mid}"></div>
+        <span class="task-text ${task.done ? 'done' : ''}"
+          onclick="toggleTask('${key}','${task.id}')">${escHtml(task.text)}</span>
+        <span class="task-time">${task.createdAt || ''}</span>
+        ${isToday
+          ? `<button class="task-del" onclick="deleteTask('${key}','${task.id}')"
+               title="${L.deleteTitle}">×</button>`
+          : ''}`;
+      ul.appendChild(li);
+    });
   }
 
-  // ─── Storage ─────────────────────────────────────────────
-  function loadAll() {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
-    catch { return {}; }
+  // Copy yesterday button
+  const yData = getDayData(getDateKey(-1));
+  const copyBtn = document.getElementById('copyYesterdayBtn');
+  if (copyBtn) copyBtn.disabled = yData.tasks.filter(t => !t.done).length === 0;
+
+  renderHistory();
+}
+
+function renderHistory() {
+  const L    = t();
+  const all  = loadAll();
+  const keys = Object.keys(all)
+    .filter(k => k !== getDateKey(0))
+    .sort((a, b) => b.localeCompare(a))
+    .slice(0, 30);
+
+  const el = document.getElementById('historyList');
+  if (keys.length === 0) {
+    el.innerHTML = `<div class="empty-state" style="padding:20px"><p>${L.noHistory}</p></div>`;
+    return;
   }
-
-  function saveAll(data) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  }
-
-  function getDayData(key) {
-    const all = loadAll();
-    return all[key] || { tasks: [] };
-  }
-
-  function saveDayData(key, data) {
-    const all = loadAll();
-    all[key] = data;
-    saveAll(all);
-  }
-
-  // ─── Priority ─────────────────────────────────────────────
-  const PRIO       = { high: 0, mid: 1, low: 2 };
-  const PRIO_CLASS = { high: 'p-high', mid: 'p-mid', low: 'p-low' };
-  const PRIO_LABEL = { high: 'High', mid: 'Mid', low: 'Low' };
-
-  // ─── Render ───────────────────────────────────────────────
-  function render() {
-    const key     = getDateKey(currentOffset);
-    const isToday = currentOffset === 0;
-
-    // Header date
-    const { main, sub } = formatDateDisplay(key);
-    document.getElementById('dateMain').innerHTML =
-      main + (isToday ? '<span class="today-badge">Today</span>' : '');
-    document.getElementById('dateSub').textContent = sub;
-
-    // Nav buttons
-    document.getElementById('prevBtn').disabled = false;
-    document.getElementById('nextBtn').disabled = currentOffset >= 0;
-
-    // Add area
-    document.getElementById('addArea').style.display = isToday ? 'block' : 'none';
-
-    // List label
-    document.getElementById('listLabel').textContent =
-      isToday ? "Today's Tasks" : `Tasks for ${main}`;
-
-    // Sort hint
-    const sortLabels = {
-      default:  '⬆ Sort by Priority',
-      priority: '🕐 Sort by Time',
-      time:     '↺ Default Order'
-    };
-    document.getElementById('sortHint').textContent = sortLabels[sortMode];
-
-    // Data
-    const data  = getDayData(key);
-    let tasks   = [...data.tasks];
-    if (sortMode === 'priority') {
-      tasks.sort((a, b) => (PRIO[a.priority] ?? 1) - (PRIO[b.priority] ?? 1));
-    } else if (sortMode === 'time') {
-      tasks.sort((a, b) => (a.createdAt || '').localeCompare(b.createdAt || ''));
-    }
-
-    // Progress
+  el.innerHTML = keys.map(key => {
+    const tasks = (all[key].tasks || []);
     const total = tasks.length;
     const done  = tasks.filter(t => t.done).length;
     const pct   = total ? Math.round(done / total * 100) : 0;
-    document.getElementById('statTotal').textContent = total;
-    document.getElementById('statDone').textContent  = done;
-    document.getElementById('progressBar').style.width = pct + '%';
-    document.getElementById('progressPct').textContent  = pct + '%';
+    const rc    = pct >= 80 ? '' : pct >= 50 ? 'mid' : 'low';
+    const { main, sub } = formatDateDisplay(key);
+    return `<div class="history-item" onclick="jumpToDate('${key}')">
+      <div>
+        <div class="history-date">${main}</div>
+        <div style="font-size:11px;color:var(--muted)">${sub} · ${L.completed(done, total)}</div>
+      </div>
+      <div class="mini-bar"><div class="mini-bar-fill" style="width:${pct}%"></div></div>
+      <div class="history-rate ${rc}">${pct}%</div>
+    </div>`;
+  }).join('');
+}
 
-    // Task list
-    const ul = document.getElementById('taskList');
-    ul.innerHTML = '';
-    if (tasks.length === 0) {
-      ul.innerHTML = `<li class="empty-state">
-        <div class="emoji">${isToday ? '✨' : '📭'}</div>
-        <p>${isToday ? 'No tasks yet — add one to get started!' : 'No tasks recorded for this day.'}</p>
-      </li>`;
-    } else {
-      tasks.forEach((task) => {
-        const li = document.createElement('li');
-        li.className = 'task-item';
-        const pClass = PRIO_CLASS[task.priority] || 'p-mid';
-        li.innerHTML = `
-          <div class="task-check ${task.done ? 'checked' : ''}"
-            onclick="toggleTask('${key}', '${task.id}')"></div>
-          <div class="priority-dot ${pClass}" title="Priority: ${PRIO_LABEL[task.priority] || 'Mid'}"></div>
-          <span class="task-text ${task.done ? 'done' : ''}"
-            onclick="toggleTask('${key}', '${task.id}')">${escHtml(task.text)}</span>
-          <span class="task-time">${task.createdAt || ''}</span>
-          ${isToday ? `<button class="task-del" onclick="deleteTask('${key}', '${task.id}')" title="Delete">×</button>` : ''}
-        `;
-        ul.appendChild(li);
-      });
-    }
-
-    // Copy yesterday button
-    const yKey  = getDateKey(-1);
-    const yData = getDayData(yKey);
-    const copyBtn = document.getElementById('copyYesterdayBtn');
-    if (copyBtn) {
-      copyBtn.disabled = (yData.tasks.filter(t => !t.done).length === 0);
-    }
-
-    // History
-    renderHistory();
-  }
-
-  function renderHistory() {
-    const all  = loadAll();
-    const keys = Object.keys(all)
-      .filter(k => k !== getDateKey(0))
-      .sort((a, b) => b.localeCompare(a))
-      .slice(0, 30);
-
-    const el = document.getElementById('historyList');
-    if (keys.length === 0) {
-      el.innerHTML = '<div class="empty-state" style="padding:20px"><p>No history yet.</p></div>';
-      return;
-    }
-
-    el.innerHTML = keys.map(key => {
-      const data  = all[key];
-      const tasks = data.tasks || [];
-      const total = tasks.length;
-      const done  = tasks.filter(t => t.done).length;
-      const pct   = total ? Math.round(done / total * 100) : 0;
-      const rateClass = pct >= 80 ? '' : pct >= 50 ? 'mid' : 'low';
-      const { main, sub } = formatDateDisplay(key);
-      return `
-        <div class="history-item" onclick="jumpToDate('${key}')">
-          <div>
-            <div class="history-date">${main}</div>
-            <div style="font-size:11px;color:var(--muted)">${sub} · ${done}/${total} completed</div>
-          </div>
-          <div class="mini-bar"><div class="mini-bar-fill" style="width:${pct}%"></div></div>
-          <div class="history-rate ${rateClass}">${pct}%</div>
-        </div>`;
-    }).join('');
-  }
-
-  // ─── Actions ──────────────────────────────────────────────
-  function addTask() {
-    const input = document.getElementById('taskInput');
-    const text  = input.value.trim();
-    if (!text) { input.focus(); return; }
-    const priority = document.getElementById('prioritySelect').value;
-    const key      = getDateKey(0);
-    const data     = getDayData(key);
-    data.tasks.push({
-      id: Date.now().toString(),
-      text,
-      done: false,
-      priority,
-      createdAt: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })
-    });
-    saveDayData(key, data);
-    input.value = '';
-    input.focus();
-    render();
-  }
-
-  function toggleTask(key, id) {
-    const data = getDayData(key);
-    const task = data.tasks.find(t => t.id === id);
-    if (task) task.done = !task.done;
-    saveDayData(key, data);
-    render();
-  }
-
-  function deleteTask(key, id) {
-    const data = getDayData(key);
-    data.tasks = data.tasks.filter(t => t.id !== id);
-    saveDayData(key, data);
-    render();
-  }
-
-  function navigate(dir) {
-    currentOffset = Math.min(0, currentOffset + dir);
-    render();
-  }
-
-  function jumpToDate(key) {
-    const todayDate  = new Date(getDateKey(0));
-    const targetDate = new Date(key);
-    currentOffset = Math.round((targetDate - todayDate) / 86400000);
-    render();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  function toggleSort() {
-    const cycle = { default: 'priority', priority: 'time', time: 'default' };
-    sortMode = cycle[sortMode];
-    render();
-  }
-
-  function toggleHistory() {
-    historyOpen = !historyOpen;
-    document.getElementById('historyList').classList.toggle('open', historyOpen);
-    document.getElementById('historyToggle').classList.toggle('open', historyOpen);
-    if (historyOpen) renderHistory();
-  }
-
-  function copyYesterday() {
-    const yKey     = getDateKey(-1);
-    const todayKey = getDateKey(0);
-    const yData    = getDayData(yKey);
-    if (!yData.tasks.length) return;
-
-    const todayData = getDayData(todayKey);
-    const now = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
-    const newTasks = yData.tasks.filter(t => !t.done).map(t => ({
-      id: Date.now().toString() + Math.random().toString(36).slice(2),
-      text: t.text,
-      done: false,
-      priority: t.priority,
-      createdAt: now
-    }));
-    todayData.tasks = [...todayData.tasks, ...newTasks];
-    saveDayData(todayKey, todayData);
-    render();
-  }
-
-  function escHtml(s) {
-    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
-
-  // ─── Init ─────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════
+// Actions
+// ═══════════════════════════════════════════════════════════
+function addTask() {
+  const input = document.getElementById('taskInput');
+  const text  = input.value.trim();
+  if (!text) { input.focus(); return; }
+  const priority = document.getElementById('prioritySelect').value;
+  const key      = getDateKey(0);
+  const data     = getDayData(key);
+  data.tasks.push({
+    id: Date.now().toString(),
+    text, done: false, priority,
+    createdAt: new Date().toLocaleTimeString('en-US',
+      { hour: '2-digit', minute: '2-digit', hour12: false })
+  });
+  saveDayData(key, data);
+  input.value = '';
+  input.focus();
   render();
+}
+
+function toggleTask(key, id) {
+  const data = getDayData(key);
+  const task = data.tasks.find(t => t.id === id);
+  if (task) task.done = !task.done;
+  saveDayData(key, data);
+  render();
+}
+
+function deleteTask(key, id) {
+  const data = getDayData(key);
+  data.tasks = data.tasks.filter(t => t.id !== id);
+  saveDayData(key, data);
+  render();
+}
+
+function navigate(dir) {
+  currentOffset = Math.min(0, currentOffset + dir);
+  render();
+}
+
+function jumpToDate(key) {
+  const diff = Math.round((new Date(key) - new Date(getDateKey(0))) / 86400000);
+  currentOffset = diff;
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleSort() {
+  sortMode = { default: 'priority', priority: 'time', time: 'default' }[sortMode];
+  render();
+}
+
+function toggleHistory() {
+  historyOpen = !historyOpen;
+  document.getElementById('historyList').classList.toggle('open', historyOpen);
+  document.getElementById('historyToggle').classList.toggle('open', historyOpen);
+  if (historyOpen) renderHistory();
+}
+
+function copyYesterday() {
+  const yKey     = getDateKey(-1);
+  const todayKey = getDateKey(0);
+  const yData    = getDayData(yKey);
+  if (!yData.tasks.length) return;
+  const todayData = getDayData(todayKey);
+  const now = new Date().toLocaleTimeString('en-US',
+    { hour: '2-digit', minute: '2-digit', hour12: false });
+  const newTasks = yData.tasks.filter(t => !t.done).map(t => ({
+    id: Date.now().toString() + Math.random().toString(36).slice(2),
+    text: t.text, done: false, priority: t.priority, createdAt: now
+  }));
+  todayData.tasks = [...todayData.tasks, ...newTasks];
+  saveDayData(todayKey, todayData);
+  render();
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ═══════════════════════════════════════════════════════════
+// Init
+// ═══════════════════════════════════════════════════════════
+document.documentElement.lang = currentLang;
+buildLangMenu();
+applyStaticText();
+render();
 </script>
 </body>
 </html>

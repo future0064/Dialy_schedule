@@ -2,9 +2,9 @@
 Unicode True
 
 !define APP_NAME     "Daily Schedule"
-!define EXE_NAME     "Daily_schedule_v1.2-win_x64.exe"
-!define OUT_NAME     "Daily_schedule_v1.2.exe"
-!define SRC_DIR      "dist\Daily_schedule_v1.2"
+!define EXE_NAME     "Daily_schedule_v1.5-win_x64.exe"
+!define OUT_NAME     "Daily_schedule_v1.5.exe"
+!define SRC_DIR      "dist\Daily_schedule_v1.5"
 
 Name "${APP_NAME}"
 OutFile "${OUT_NAME}"
@@ -13,7 +13,7 @@ RequestExecutionLevel user
 SilentInstall silent
 
 ; 解压到用户临时目录下固定子目录（保证 localStorage 数据持久）
-InstallDir "$LOCALAPPDATA\Daily_schedule_v1.2"
+InstallDir "$LOCALAPPDATA\Daily_schedule_v1.5"
 
 !include "LogicLib.nsh"
 

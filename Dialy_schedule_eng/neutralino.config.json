@@ -38,7 +38,7 @@
     }
   },
   "cli": {
-    "binaryName": "Daily_schedule_v1.2",
+    "binaryName": "Daily_schedule_v1.5",
     "resourcesPath": "/resources/",
     "extensionsPath": "/extensions/",
     "clientLibrary": "/resources/js/neutralino.js",
